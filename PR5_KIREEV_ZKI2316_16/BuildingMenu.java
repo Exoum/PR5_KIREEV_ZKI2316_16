@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import java.io.*;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,19 +46,19 @@ public class BuildingMenu {
                         String type = scanner.next();
                         System.out.print("Введите количество этажей: ");
                         int floors = scanner.nextInt();
-                        System.out.print("Введите статус здания (новое, старое, реконструированное и т.д): ");
+                        System.out.print("Введите статус здания (новое, старое и т.д): ");
                         String status = scanner.next();
                         System.out.print("Введите площадь: ");
                         double area = scanner.nextDouble();
                         System.out.print("Является ли коммерческим (true/false): ");
                         boolean isCommercial = scanner.nextBoolean();
                         buildings.add(new Building(type, floors, status, area, isCommercial));
-                    } catch (InvalidBuildingDataException e) {
+                    } catch (InvalidBuildingDataEx e) {
                         System.out.println(e.getMessage());
-                        LOGGER.log(Level.WARNING, "Некорректные данные здания.", e); // Используем LOGGER
+                        LOGGER.log(Level.WARNING, "Некорректные данные здания.", e);
                     } catch (Exception e) {
                         System.out.println("Некорректный ввод! Проверьте данные.");
-                        LOGGER.log(Level.WARNING, "Некорректный ввод данных.", e); // Используем LOGGER
+                        LOGGER.log(Level.WARNING, "Некорректный ввод данных.", e);
                         scanner.nextLine(); // очистка буфера ввода
                     }
                     break;
@@ -70,7 +70,8 @@ public class BuildingMenu {
                         if (index <= 0 || index > buildings.size()) {
                             throw new IndexOutOfBoundsException("Некорректный индекс объекта.");
                         }
-                        System.out.print("Введите поле для редактирования (type/floors/status/area/isCommercial): ");
+                        System.out.print("Введите поле для редактирования" + 
+                        "(type/floors/status/area/isCommercial): ");
                         String fieldName = scanner.next();
                         System.out.print("Введите новое значение: ");
                         Object value;
@@ -87,10 +88,10 @@ public class BuildingMenu {
                         buildings.get(index - 1).editBuildingField(fieldName, value);
                     } catch (IndexOutOfBoundsException e) {
                         System.out.println(e.getMessage());
-                        LOGGER.log(Level.WARNING, "Некорректный индекс.", e); // Используем LOGGER
+                        LOGGER.log(Level.WARNING, "Некорректный индекс.", e);
                     } catch (Exception e) {
                         System.out.println("Некорректный ввод! Проверьте данные.");
-                        LOGGER.log(Level.WARNING, "Некорректный ввод данных.", e); // Используем LOGGER
+                        LOGGER.log(Level.WARNING, "Некорректный ввод данных.", e);
                         scanner.nextLine(); // очистка буфера ввода
                     }
                     break;
@@ -100,7 +101,8 @@ public class BuildingMenu {
                     break;
                 case 5:
                     clearConsole();
-                    System.out.print("Выберите поле для сортировки (type/floors/status/area/isCommercial): ");
+                    System.out.print("Выберите поле для сортировки" + 
+                    "(type/floors/status/area/isCommercial): ");
                     String sortField = scanner.next();
                     Building.sortBuildings(buildings, sortField);
                     break;
@@ -121,24 +123,24 @@ public class BuildingMenu {
     }
 }
 
-class InvalidBuildingDataException extends Exception {
-    public InvalidBuildingDataException(String message) {
+class InvalidBuildingDataEx extends Exception {
+    public InvalidBuildingDataEx(String message) {
         super(message);
     }
 }
 
-class BuildingDataValidationException extends RuntimeException {
-    public BuildingDataValidationException(String message) {
+class BuildingDataValidationEx extends RuntimeException {
+    public BuildingDataValidationEx(String message) {
         super(message);
     }
 }
 
-class BuildingOperationException extends Exception {
-    public BuildingOperationException(String message) {
+class BuildingOperationEx extends Exception {
+    public BuildingOperationEx(String message) {
         super(message);
     }
 
-    public BuildingOperationException(String message, Throwable cause) {
+    public BuildingOperationEx(String message, Throwable cause) {
         super(message, cause);
     }
 }

@@ -20,12 +20,13 @@ class Building {
     }
 
     // Конструктор с параметрами
-    public Building(String type, int floors, String status, double area, boolean isCommercial) throws InvalidBuildingDataException {
+    public Building(String type, int floors, String status, double area, boolean isCommercial) 
+    throws InvalidBuildingDataEx {
         if (floors <= 0) {
-            throw new InvalidBuildingDataException("Количество этажей должно быть больше 0.");
+            throw new InvalidBuildingDataEx("Количество этажей должно быть больше 0.");
         }
         if (area <= 0) {
-            throw new InvalidBuildingDataException("Площадь здания должна быть больше 0.");
+            throw new InvalidBuildingDataEx("Площадь здания должна быть больше 0.");
         }
         this.type = type;
         this.floors = floors;
@@ -47,9 +48,9 @@ class Building {
         return floors;
     }
 
-    public void setFloors(int floors) throws InvalidBuildingDataException {
+    public void setFloors(int floors) throws InvalidBuildingDataEx {
         if (floors <= 0) {
-            throw new InvalidBuildingDataException("Количество этажей должно быть больше 0.");
+            throw new InvalidBuildingDataEx("Количество этажей должно быть больше 0.");
         }
         this.floors = floors;
     }
@@ -66,9 +67,9 @@ class Building {
         return area;
     }
 
-    public void setArea(double area) throws InvalidBuildingDataException {
+    public void setArea(double area) throws InvalidBuildingDataEx {
         if (area <= 0) {
-            throw new InvalidBuildingDataException("Площадь здания должна быть больше 0.");
+            throw new InvalidBuildingDataEx("Площадь здания должна быть больше 0.");
         }
         this.area = area;
     }
@@ -81,7 +82,8 @@ class Building {
         isCommercial = commercial;
     }
 
-    public void editBuildingField(String fieldName, Object value) throws InvalidBuildingDataException, BuildingDataValidationException {
+    public void editBuildingField(String fieldName, Object value)
+    throws InvalidBuildingDataEx, BuildingDataValidationEx {
         try {
             switch (fieldName) {
                 case "type":
@@ -102,17 +104,14 @@ class Building {
                 default:
                     System.out.println("Некорректное поле для редактирования.");
             }
-        } catch (BuildingDataValidationException e) {
-            new BuildingOperationException("Некорректные данные для редактирования.", e);
+        } catch (BuildingDataValidationEx e) {
+            new BuildingOperationEx("Некорректные данные для редактирования.", e);
         }
     }
 
     // Метод для вывода информации обо всех объектах
     public static void displayAllBuildings(ArrayList<Building> buildings) {
-        if (buildings.isEmpty()) {
-            System.out.println("Список зданий пуст.");
-            return;
-        }
+        assert !buildings.isEmpty() : "Список зданий не может быть пустым."; // Утверждение
         for (Building building : buildings) {
             System.out.println(building.toString());
         }
@@ -150,5 +149,27 @@ class Building {
                 ", area=" + area +
                 ", isCommercial=" + isCommercial +
                 '}';
+    }
+}
+
+class InvalidBuildingDataEx extends Exception {
+    public InvalidBuildingDataEx(String message) {
+        super(message);
+    }
+}
+
+class BuildingDataValidationEx extends RuntimeException {
+    public BuildingDataValidationEx(String message) {
+        super(message);
+    }
+}
+
+class BuildingOperationEx extends Exception {
+    public BuildingOperationEx(String message) {
+        super(message);
+    }
+
+    public BuildingOperationEx(String message, Throwable cause) {
+        super(message, cause);
     }
 }
